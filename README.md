@@ -16,13 +16,13 @@ Il fonctionne sur de nombreux systèmes d'exploitation et environnements de clou
 Pour en savoir plus sur RabbitMQ, vous pouvez consulter leur site web à l'adresse suivante: https://www.rabbitmq.com/
 
 <p align="center">
-  <img src="assets/RabbitMG.PNG" alt="My Image">
+  <img src="assets/RabbitMG.png" alt="My Image">
 </p>
 
 # Le Projet:
 Notre projet consiste à créer un producteur qui lit un fichier journal (logs) et publie les données sur deux files d'attente, queue-data-lake et queue-data-clean. Les deux files d'attente utilisent la même clé de routage, "logs", ce qui signifie que chaque événement publié par le producteur sera envoyé aux deux files d'attente. Deux consommateurs seront créés pour consommer les événements de chaque file d'attente, transformer les données et les insérer dans une base de données à l'aide d'un ORM.
 
-Voici quelques suggestions pour améliorer votre idée de projet :
+Voici quelques suggestions pour améliorer notre réalisation :
 
 Définir l'objectif du projet: Avant de commencer à développer le projet, il est important de définir clairement l'objectif et les cas d'utilisation. Par exemple, l'objectif peut être de collecter et de stocker des données de journalisation pour l'analyse ou pour surveiller la santé d'une application. Les cas d'utilisation peuvent inclure la détection des erreurs, le suivi des performances, la sécurité ou la conformité.
 
@@ -38,4 +38,39 @@ En résumé, pour améliorer votre idée de projet, il est important de définir
 
 <p align="center">
   <img src="assets/schema.png" alt="My Image">
+</p>
+
+# data-lake-consumer:
+
+Le data-lake-consumer se connectera à une base de données MySQL et insérera chaque ligne de journalisation comme un nouveau enregistrement dans une table appelée raw-log en utilisant un ORM. Les informations seront stockées avec les détails suivants :
+
+-id : hachage md5 de toute la ligne de journalisation ;
+-timestamp : l'heure de la journalisation avec le fuseau horaire ;
+-log : toute la ligne de journalisation.
+
+Le data-lake-consumer permettra donc de stocker les informations de journalisation collectées dans la base de données MySQL, en les organisant dans la table raw-log pour faciliter leur gestion et leur utilisation ultérieure. Les données seront stockées avec une clé unique (id) pour garantir leur unicité, et avec un horodatage pour suivre l'évolution de la journalisation dans le temps.
+
+Cela permettra aux utilisateurs du système de consulter facilement les données de journalisation, de les analyser et de les utiliser pour surveiller les performances, détecter les erreurs et améliorer la qualité de l'application.
+
+# data-clean-consumer:
+
+Le data-clean-consumer sera responsable de la transformation des données de journalisation collectées dans la file d'attente queue-data-clean. Il se connectera à la base de données MySQL et insérera chaque ligne de journalisation transformée comme un nouveau enregistrement dans une table appelée clean-log en utilisant un ORM.
+
+
+# Implémentation  du projet
+
+j'ai créé un seul fichier **consumer.py** ,dans ce fichier  qui sert à consommer des messages à partir de deux files d'attente RabbitMQ: **queue-data-lake** et **queue-data-clean**.
+
+Le consumer utilise une instance **BlockingChannel** pour se connecter à RabbitMQ et utilise l'échange **topic-exchange-logs** pour s'abonner aux messages publiés avec les clés de routage **"logs"**.
+
+Le code utilise également SQLAlchemy pour interagir avec une base de données MySQL. Il définit des modèles de données pour les logs bruts et les logs nettoyés. Il crée ensuite une instance de session à l'aide de **sessionmaker()** pour se connecter à la base de données.
+
+La fonction **process_msg_lake**  (c'est le data-lake-consumer )est appelée lorsqu'un message est publié sur la file d'attente **queue-data-lake**. Elle consomme le message et insère un enregistrement dans la table raw_log.
+
+La fonction **process_msg_clean**  (c'est le data-clean-consumer)est appelée lorsqu'un message est publié sur la file d'attente **queue-data-clean**. Elle consomme le message, effectue des transformations sur les données à l'aide de différentes classes de transformation telles que **UserTransformation** et **UrlTransformation**, et insère un enregistrement nettoyé dans la t**able clean_log**.
+
+Le code est configuré pour exécuter les deux fonctions de consommation indéfiniment en utilisant **channel.start_consuming()**.
+
+<p align="center">
+  <img src="assets/consumer.PNG" alt="My Image">
 </p>
