@@ -74,3 +74,35 @@ Le code est configuré pour exécuter les deux fonctions de consommation indéfi
 <p align="center">
   <img src="assets/consumer.PNG" alt="My Image">
 </p>
+
+## topic-producer.py
+
+Le fichier **"topic-producer.py"** est un script Python qui crée des files d'attente **(queues)**et des échanges **(exchanges)** en utilisant la bibliothèque **pika**. Il lit un fichier de logs web (**"web-server-nginx.log"**) et publie chaque ligne de log dans l'échange "**topic-exchange-logs**" avec la clé de routage **"logs"**. Les logs sont ensuite transmis aux files d'attente **"queue-data-lake"** et **"queue-data-clean"** pour être nettoyés et stockés.
+
+Le script contient également une liste d'événements, qui sont également publiés dans l'échange "topic-exchange-logs". Enfin, il initialise un fichier CSV ("parsed_data.csv") qui contiendra les données nettoyées.
+## log_clean.py
+Le fichier **"log_clean.py"** contient une classe **"Log_clean"**qui a plusieurs méthodes pour nettoyer et analyser des logs web.
+
+La classe a plusieurs attributs tels que **"ip"**, **"user"**, **"domain"**, **"status"**, **"timestamp"**, **"method"**, **"schema"**, **"host"**, **"size"**, **"url"**, **"year"**, "month", **"day"**,**"day_of_week"**, **"time"**, **"country"**, **"city"**, **"session"** et **"rest_vers"**.
+Les méthodes de la classe comprennent:
+**init** : Constructeur qui initialise toutes les variables de la classe à None.
+**parse** : Cette méthode prend une ligne de log en entrée et extrait les informations importantes telles que l'adresse IP, le nom d'utilisateur, le statut de la requête, le **timestamp**, la méthode HTTP, la taille de la réponse et l'URL de la requête.
+**MD5** : Cette méthode prend une chaîne de caractères en entrée et calcule son hash MD5.
+**get_location** : Cette méthode prend une adresse IP en entrée et utilise l'API "ipapi.co" pour récupérer des informations sur la localisation de cette adresse IP tels que le pays et la ville.
+**TimeStamp** : Cette méthode extrait le timestamp à partir d'une ligne de log.
+**rest_version** : Cette méthode extrait la version de HTTP à partir d'une ligne de log.
+**str**: Cette méthode renvoie une chaîne de caractères contenant toutes les informations extraites par les autres méthodes.
+En résumé, ce fichier contient une classe pour nettoyer et analyser des logs web. La classe a plusieurs méthodes pour extraire les informations importantes à partir de chaque ligne de log, telles que l'adresse IP, le timestamp, la méthode HTTP, la taille de la réponse et l'URL de la requête.
+
+## row_log.py
+Le **row_log.py**fichier contient la **Log_lakeclasse** utilisée pour créer un objet qui représente une entrée de journal dans un fichier journal.
+
+La classe a trois attributs : **id**, **timestampet** **log**.
+
+La **MD5** méthode prend une entrée de journal sous forme de chaîne, la convertit en sa valeur de hachage MD5 et stocke la valeur de hachage dans l' idattribut.
+
+La **TimeStamp** méthode prend une entrée de journal sous forme de chaîne, extrait l'horodatage de l'entrée de journal à l'aide d'expressions régulières et stocke l'horodatage dans l' timestampattribut.
+
+La **line** méthode prend une entrée de journal sous forme de chaîne, supprime tous les guillemets doubles dans l'entrée de journal et supprime la dernière partie de l'entrée de journal, qui représente la taille de l'entrée de journal. Le message de journal résultant est stocké dans l' logattribut.
+
+**La __str__méthode** renvoie une représentation sous forme de chaîne de l'objet, y compris les attributs id, timestampet .log
