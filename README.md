@@ -15,10 +15,8 @@ Il fonctionne sur de nombreux systèmes d'exploitation et environnements de clou
 
 Pour en savoir plus sur RabbitMQ, vous pouvez consulter leur site web à l'adresse suivante: https://www.rabbitmq.com/
 
-![My Image](assets/RabbitMG.jpg)
-
 <p align="center">
-  <img src="assets/RabbitMG.jpg" alt="My Image">
+  <img src="assets/RabbitMG.PNG" alt="My Image">
 </p>
 
 # Le Projet:
@@ -38,4 +36,6 @@ Sécurité : La sécurité doit être prise en compte dès le début du projet, 
 
 En résumé, pour améliorer votre idée de projet, il est important de définir clairement l'objectif et les cas d'utilisation, de choisir les technologies appropriées, de définir les formats de données et les stratégies de traitement des erreurs, et de prendre en compte les aspects de sécurité.
 
-
+<p align="center">
+  <img src="assets/schema.png" alt="My Image">
+</p>
