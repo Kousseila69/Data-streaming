@@ -229,7 +229,7 @@ Lancer le consommateur qui attendra l'arrivée des événements dans les deux fi
 
 
 <p align="center">
-  <img src="assets/queue.png" alt="My Image">
+  <img src="assets/queues.png" alt="My Image">
 </p>
 
 <p align="center">
