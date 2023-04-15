@@ -85,13 +85,14 @@ Le fichier **"log_clean.py"** contient une classe **"Log_clean"**qui a plusieurs
 
 La classe a plusieurs attributs tels que **"ip"**, **"user"**, **"domain"**, **"status"**, **"timestamp"**, **"method"**, **"schema"**, **"host"**, **"size"**, **"url"**, **"year"**, "month", **"day"**,**"day_of_week"**, **"time"**, **"country"**, **"city"**, **"session"** et **"rest_vers"**.
 Les méthodes de la classe comprennent:
-**init** : Constructeur qui initialise toutes les variables de la classe à None.
-**parse** : Cette méthode prend une ligne de log en entrée et extrait les informations importantes telles que l'adresse IP, le nom d'utilisateur, le statut de la requête, le **timestamp**, la méthode HTTP, la taille de la réponse et l'URL de la requête.
-**MD5** : Cette méthode prend une chaîne de caractères en entrée et calcule son hash MD5.
+
+-**init** : Constructeur qui initialise toutes les variables de la classe à None.
+-**parse** : Cette méthode prend une ligne de log en entrée et extrait les informations importantes telles que l'adresse IP, le nom d'utilisateur, le statut de la requête, le -**timestamp**, la méthode HTTP, la taille de la réponse et l'URL de la requête.
+-**MD5** : Cette méthode prend une chaîne de caractères en entrée et calcule son hash MD5.
 **get_location** : Cette méthode prend une adresse IP en entrée et utilise l'API "ipapi.co" pour récupérer des informations sur la localisation de cette adresse IP tels que le pays et la ville.
-**TimeStamp** : Cette méthode extrait le timestamp à partir d'une ligne de log.
-**rest_version** : Cette méthode extrait la version de HTTP à partir d'une ligne de log.
-**str**: Cette méthode renvoie une chaîne de caractères contenant toutes les informations extraites par les autres méthodes.
+-**TimeStamp** : Cette méthode extrait le timestamp à partir d'une ligne de log.
+-**rest_version** : Cette méthode extrait la version de HTTP à partir d'une ligne de log.
+-**str**: Cette méthode renvoie une chaîne de caractères contenant toutes les informations extraites par les autres méthodes.
 En résumé, ce fichier contient une classe pour nettoyer et analyser des logs web. La classe a plusieurs méthodes pour extraire les informations importantes à partir de chaque ligne de log, telles que l'adresse IP, le timestamp, la méthode HTTP, la taille de la réponse et l'URL de la requête.
 
 ## row_log.py
@@ -106,3 +107,22 @@ La **TimeStamp** méthode prend une entrée de journal sous forme de chaîne, ex
 La **line** méthode prend une entrée de journal sous forme de chaîne, supprime tous les guillemets doubles dans l'entrée de journal et supprime la dernière partie de l'entrée de journal, qui représente la taille de l'entrée de journal. Le message de journal résultant est stocké dans l' logattribut.
 
 **La __str__méthode** renvoie une représentation sous forme de chaîne de l'objet, y compris les attributs id, timestampet .log
+
+ ## transformation.py
+Ce fichier **transformation.py** contient un module Python qui définit les classes pour la transformation des données de journal. Il importe plusieurs modules Python, notamment re, urllib.parse, abc, datetime, socket, requests, geoip2.databaseet http.
+
+Le module définit cinq classes, chacune implémentant une opération de transformation pour un aspect spécifique des données de journal. Chaque classe hérite d'une classe de base abstraite appelée **BaseTransformationet** implémente sa transform méthode, qui accepte un seul argument logde type **Log_cleanet** renvoie une instance de **Log_cleanaprès** avoir appliqué une transformation spécifique aux données.
+
+Les cinq classes sont :
+
+**UserTransformation**: Cette classe implémente la transformation des données utilisateur dans un journal. Il vérifie si les données utilisateur sont une adresse e-mail et, si c'est le cas, extrait le nom de domaine et les ensembles is_emailet domainattributs de l' **Log_cleaninstance**.
+
+**UrlTransformation**: Cette classe implémente la transformation des données d'URL dans un journal. Il extrait le schéma et l'hôte d'une chaîne d'URL et définit les attributs schemaet hostde l' Log_cleaninstance.
+
+**IPTransformation**: Cette classe implémente la transformation des données d'adresse IP dans un journal. Il est censé extraire le pays et la ville de l'adresse IP d'une géo-base de données, mais l'implémentation est commentée.
+
+**TimeTransformation**: Cette classe implémente la transformation des données d'horodatage dans un journal. Il analyse la chaîne d'horodatage dans le journal et la convertit en heure UTC, définit les attributs timestamp, year, day, day_of_week, monthet timede l' Log_cleaninstance.
+
+**StatusCodeTransformation**: Cette classe implémente la transformation des données de code d'état dans un journal. Il convertit le code d'état en une chaîne lisible par l'homme à l'aide du httpmodule et définit l' status_verboseattribut de l' Log_cleaninstance. Si le code d'état n'est pas valide, il est défini status_verbosesur "Etat invalide".
+
+**sizeTransformation**: Cette classe implémente la transformation des données de taille dans un journal. Il convertit la taille d'octets en kilo-octets et mégaoctets et définit les attributs size_k_bet size_m_bde l' Log_cleaninstance.
