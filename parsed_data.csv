@@ -1,0 +1,1 @@
+id,timestamp,year,month,day,day_of_week,time,ip,country,city,session,user,is_email,email_domain,rest_method,url,schema,host,rest_version,status,status_verbose,size_bytes,size_kilo_bytes,size_mega_bytes
