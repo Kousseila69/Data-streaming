@@ -80,22 +80,34 @@ Le code est configuré pour exécuter les deux fonctions de consommation indéfi
 Le fichier **"topic-producer.py"** est un script Python qui crée des files d'attente **(queues)**et des échanges **(exchanges)** en utilisant la bibliothèque **pika**. Il lit un fichier de logs web (**"web-server-nginx.log"**) et publie chaque ligne de log dans l'échange "**topic-exchange-logs**" avec la clé de routage **"logs"**. Les logs sont ensuite transmis aux files d'attente **"queue-data-lake"** et **"queue-data-clean"** pour être nettoyés et stockés.
 
 Le script contient également une liste d'événements, qui sont également publiés dans l'échange "topic-exchange-logs". Enfin, il initialise un fichier CSV ("parsed_data.csv") qui contiendra les données nettoyées.
+
 ## log_clean.py
 Le fichier **"log_clean.py"** contient une classe **"Log_clean"**qui a plusieurs méthodes pour nettoyer et analyser des logs web.
 
 La classe a plusieurs attributs tels que **"ip"**, **"user"**, **"domain"**, **"status"**, **"timestamp"**, **"method"**, **"schema"**, **"host"**, **"size"**, **"url"**, **"year"**, "month", **"day"**,**"day_of_week"**, **"time"**, **"country"**, **"city"**, **"session"** et **"rest_vers"**.
+
 Les méthodes de la classe comprennent:
 
 -**init** : Constructeur qui initialise toutes les variables de la classe à None.
--**parse** : Cette méthode prend une ligne de log en entrée et extrait les informations importantes telles que l'adresse IP, le nom d'utilisateur, le statut de la requête, le -**timestamp**, la méthode HTTP, la taille de la réponse et l'URL de la requête.
+
+-**parse** : Cette méthode prend une ligne de log en entrée et extrait les informations importantes telles que l'adresse IP, le nom d'utilisateur, le statut de la requête, 
+
+-le **timestamp**, la méthode HTTP, la taille de la réponse et l'URL de la requête.
+
 -**MD5** : Cette méthode prend une chaîne de caractères en entrée et calcule son hash MD5.
+
 **get_location** : Cette méthode prend une adresse IP en entrée et utilise l'API "ipapi.co" pour récupérer des informations sur la localisation de cette adresse IP tels que le pays et la ville.
+
 -**TimeStamp** : Cette méthode extrait le timestamp à partir d'une ligne de log.
+
 -**rest_version** : Cette méthode extrait la version de HTTP à partir d'une ligne de log.
+
 -**str**: Cette méthode renvoie une chaîne de caractères contenant toutes les informations extraites par les autres méthodes.
+
 En résumé, ce fichier contient une classe pour nettoyer et analyser des logs web. La classe a plusieurs méthodes pour extraire les informations importantes à partir de chaque ligne de log, telles que l'adresse IP, le timestamp, la méthode HTTP, la taille de la réponse et l'URL de la requête.
 
 ## row_log.py
+
 Le **row_log.py**fichier contient la **Log_lakeclasse** utilisée pour créer un objet qui représente une entrée de journal dans un fichier journal.
 
 La classe a trois attributs : **id**, **timestampet** **log**.
@@ -109,6 +121,7 @@ La **line** méthode prend une entrée de journal sous forme de chaîne, supprim
 **La __str__méthode** renvoie une représentation sous forme de chaîne de l'objet, y compris les attributs id, timestampet .log
 
  ## transformation.py
+ 
 Ce fichier **transformation.py** contient un module Python qui définit les classes pour la transformation des données de journal. Il importe plusieurs modules Python, notamment re, urllib.parse, abc, datetime, socket, requests, geoip2.databaseet http.
 
 Le module définit cinq classes, chacune implémentant une opération de transformation pour un aspect spécifique des données de journal. Chaque classe hérite d'une classe de base abstraite appelée **BaseTransformationet** implémente sa transform méthode, qui accepte un seul argument logde type **Log_cleanet** renvoie une instance de **Log_cleanaprès** avoir appliqué une transformation spécifique aux données.
