@@ -260,5 +260,5 @@ Les deux classes héritent de la classe SQLAlchemy Base, qui fournit les attribu
 ## Table des logs row_log
 
 <p align="center">
-  <img src="assets/rowlog.PNG" alt="My Image">
+  <img src="assets/rw.PNG" alt="My Image">
 </p>
