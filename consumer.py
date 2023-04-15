@@ -29,10 +29,8 @@ QUEUES = [
 ]
 
 EXCHANGE_NAME = "topic-exchange-logs"
-
 # create exchange
 channel.exchange_declare(EXCHANGE_NAME, durable=True, exchange_type='topic')
-
 # create queues
 for queue in QUEUES:
     channel.queue_declare(queue=queue['name'])
@@ -43,6 +41,7 @@ engine = create_engine(
     (CONFIG['DB_USER'], CONFIG['DB_PASSWORD'], CONFIG['DB_NAME'])
 )
 
+
 connection = engine.connect()
 Base.metadata.create_all(engine)
 
@@ -51,8 +50,10 @@ session = Session()
 
 
 
+#data-clean-consumer
+
 def process_msg_clean(chan: BlockingChannel, method: Basic.Deliver, properties: BasicProperties, body):
-    print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+    print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 
  # event consumed from exchange `{method.exchange}` body `{body}`")
 
@@ -84,11 +85,7 @@ def process_msg_clean(chan: BlockingChannel, method: Basic.Deliver, properties: 
       # except Exception as e:
               #  print(e)             
 
-
-
-
-
-
+#data-lake-consumer
 def process_msg_lake(chan: BlockingChannel, method: Basic.Deliver, properties: BasicProperties, body):
     print(f"[{method.routing_key}] event consumed from exchange `{method.exchange}` body `{body}`")
 
@@ -112,9 +109,7 @@ def process_msg_lake(chan: BlockingChannel, method: Basic.Deliver, properties: B
 
 # consume messages from queues
 channel.basic_consume(queue="queue-data-lake", on_message_callback=process_msg_lake, auto_ack=True)
-
 channel.basic_consume(queue="queue-data-clean", on_message_callback=process_msg_clean, auto_ack=True)
 #channel.basic_consume(queue="queue-b", on_message_callback=process_msg, auto_ack=True)
 #channel.basic_consume(queue="queue-c", on_message_callback=process_msg, auto_ack=True)
-
 channel.start_consuming()

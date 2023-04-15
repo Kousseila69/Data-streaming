@@ -16,7 +16,7 @@ Il fonctionne sur de nombreux systèmes d'exploitation et environnements de clou
 Pour en savoir plus sur RabbitMQ, vous pouvez consulter leur site web à l'adresse suivante: https://www.rabbitmq.com/
 
 <p align="center">
-  <img src="assets/RabbitMG.png" alt="My Image">
+  <img src="assets/rab.PNG" alt="My Image">
 </p>
 
 # Le Projet:
@@ -179,7 +179,7 @@ Pour se connecter à la base de données où les journaux seront stockés à l'a
 Execute cette commande:
 
 ```
-ouaguenikousseila@gmail.com
+
 python -m venv venv
 .\venv\Scripts\activate
 pip install -r requirements.txt
@@ -211,11 +211,54 @@ Cela enverra un certain nombre de messages dans la file d'attente spécifiée
   <img src="assets/queue-ex.PNG" alt="My Image">
 </p>
 
-<div style="display: flex; flex-wrap: nowrap;">
-    <div style="flex: 1; padding-right: 10px;">
-        <img src="assets/Queue.PNG" alt="My Image">
-    </div>
-    <div style="flex: 1; padding-left: 10px;">
-        <img src="assets/queue-ex.PNG" alt="My Image">
-    </div>
-</div>
+## Execution  - à consommer des messages à partir de deux files d'attente RabbitMQ
+
+Exécutez la commande suivante:
+
+```
+python consumer.py
+
+```
+Cela permettra de :
+
+Créer la connexion au serveur ;
+Créer l'échange (**topic-exchange-logs**) de type **"topic"** ;
+Créer la file d'attente queue-data-clean et queue-data-lake ;
+Créer le consommateur d'événements pour les deux files d'attente ;
+Lancer le consommateur qui attendra l'arrivée des événements dans les deux files d'attente pour commencer à les consommer.
+
+
+<p align="center">
+  <img src="assets/queue.png" alt="My Image">
+</p>
+
+<p align="center">
+  <img src="assets/msgexchange.png" alt="My Image">
+</p>
+
+ # Création  de la base de données  DB_LOGS  des tables  raw-log et clean_log
+
+ Le fichier **models.py** contient les définitions de deux classes de modèles SQLAlchemy : **clean_log**et **raw_log**.
+
+La classe **clean_log** définit la structure de la table de base de données qui stockera les logs nettoyés. Chaque colonne correspond à un attribut des logs nettoyés qui seront extraits, transformés et chargés dans la base de données.
+
+La classe **raw_log** définit la structure de la table de base de données qui stockera les logs bruts. Elle ne contient qu'une seule colonne pour le contenu du log brut et un identifiant unique pour chaque ligne.
+
+Les deux classes héritent de la classe SQLAlchemy Base, qui fournit les attributs de base de la définition de modèle SQLAlchemy.
+
+<p align="center">
+  <img src="assets/phpmyadm.PNG" alt="My Image">
+</p>
+
+## Table des logs clean_log
+
+<p align="center">
+  <img src="assets/logclean.PNG" alt="My Image">
+</p>
+
+
+## Table des logs row_log
+
+<p align="center">
+  <img src="assets/rowlog.PNG" alt="My Image">
+</p>
