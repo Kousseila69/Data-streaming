@@ -121,7 +121,7 @@ La **line** méthode prend une entrée de journal sous forme de chaîne, supprim
 **La __str__méthode** renvoie une représentation sous forme de chaîne de l'objet, y compris les attributs id, timestampet .log
 
  ## transformation.py
- 
+
 Ce fichier **transformation.py** contient un module Python qui définit les classes pour la transformation des données de journal. Il importe plusieurs modules Python, notamment re, urllib.parse, abc, datetime, socket, requests, geoip2.databaseet http.
 
 Le module définit cinq classes, chacune implémentant une opération de transformation pour un aspect spécifique des données de journal. Chaque classe hérite d'une classe de base abstraite appelée **BaseTransformationet** implémente sa transform méthode, qui accepte un seul argument logde type **Log_cleanet** renvoie une instance de **Log_cleanaprès** avoir appliqué une transformation spécifique aux données.
@@ -139,3 +139,74 @@ Les cinq classes sont :
 **StatusCodeTransformation**: Cette classe implémente la transformation des données de code d'état dans un journal. Il convertit le code d'état en une chaîne lisible par l'homme à l'aide du httpmodule et définit l' status_verboseattribut de l' Log_cleaninstance. Si le code d'état n'est pas valide, il est défini status_verbosesur "Etat invalide".
 
 **sizeTransformation**: Cette classe implémente la transformation des données de taille dans un journal. Il convertit la taille d'octets en kilo-octets et mégaoctets et définit les attributs size_k_bet size_m_bde l' Log_cleaninstance.
+
+
+
+# Pratique : installation & execution 
+
+Clonez le projet en utilisant la commande suivante :
+```
+git clone https://github.com/Kousseila69/Data-streaming-RabbitMQ.git
+
+```
+En suite  il faut créer un fichier **.env** ou bien modéfié le contenu de fichier existant avec les valeurs  suivantes :
+
+*   Le nom d'utilisateur et le mot de passe administrateur de votre serveur RabbitMQ ;
+
+*   Le nom d'utilisateur et le mot de passe de votre serveur MySQL ;
+
+*   Le mot de passe root de votre serveur MySQL ;
+
+*   Le nom de la base de données qui hébergera les événements consommés.
+
+## docker-compose
+
+Pour créer une instance RabbitMQ et une instance de serveur MySQL en utilisant docker-compose et le fichier .env, exécutez la commande suivante :
+
+```
+docker-compose --env-file .env -f docker-compose.yml -p data-stream up -d
+
+```
+
+Cela va créer :
+
+Un serveur de flux de données et un serveur Web pour gérer RabbitMQ exposé sur le port 15672 (http://localhost:15672/);
+Un serveur de base de données MySql et un serveur phpMyAdmin pour interagir avec la base de données (http://localhost:8080/).
+Pour se connecter à la base de données où les journaux seront stockés à l'aide de phpMyAdmin et à RabbitMQ en utilisant le serveur de flux de données, utilisez les identifiants du fichier .env.
+
+## Environnement virtuel Python
+
+Execute cette commande:
+
+```
+ouaguenikousseila@gmail.com
+python -m venv venv
+.\venv\Scripts\activate
+pip install -r requirements.txt
+
+```
+
+Ces commandes permettent de créer un environnement virtuel Python avec la commande python **-m venv venv**, d'activer l'environnement virtuel avec la commande **.\venv\Scripts\activate**, puis d'installer toutes les dépendances listées dans le fichier **requirements.txt** avec la commande**pip install -r requirements.txt**.
+
+L'utilisation d'un environnement virtuel Python est une bonne pratique pour isoler les dépendances d'un projet et éviter les conflits avec d'autres projets ou le système global de Python. La commande **pip install -r requirements.txt** permet d'installer toutes les dépendances nécessaires pour exécuter le projet.
+
+## Execution  -envoyer des messages dans la file d'attente RabbitMQ
+
+Une fois l'envenvironnement virtuel Python activé , exécutez le script topic-producer.py en utilisant la commande:
+
+```
+
+python topic_producer.py
+
+```
+
+Cela enverra un certain nombre de messages dans la file d'attente spécifiée
+
+
+<p align="center">
+  <img src="assets/Queue.PNG" alt="My Image">
+</p>
+
+<p align="center">
+  <img src="assets/queue-ex.PNG" alt="My Image">
+</p>

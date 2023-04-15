@@ -39,7 +39,7 @@ for queue in QUEUES:
     channel.queue_bind(exchange=EXCHANGE_NAME, queue=queue['name'], routing_key=queue['routing_key'])
 
 # utilisation de la fonction open pour ouvrir le fichier web-server-nginx.log
-logs_files = open("C:/Users/Windows-10/Desktop/Projet/python/class-4/assets/web-server-nginx.log")
+logs_files = open("C:/Users/Windows-10/Desktop/Projet/python/Data-streaming-RabbitMQ/assets/web-server-nginx.log")
 
 for line in logs_files:
     channel.basic_publish(exchange=EXCHANGE_NAME, routing_key='logs', body=line)
