@@ -210,3 +210,12 @@ Cela enverra un certain nombre de messages dans la file d'attente spécifiée
 <p align="center">
   <img src="assets/queue-ex.PNG" alt="My Image">
 </p>
+
+<div style="display: flex; flex-wrap: nowrap;">
+    <div style="flex: 1; padding-right: 10px;">
+        <img src="assets/Queue.PNG" alt="My Image">
+    </div>
+    <div style="flex: 1; padding-left: 10px;">
+        <img src="assets/queue-ex.PNG" alt="My Image">
+    </div>
+</div>
